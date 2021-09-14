@@ -9,6 +9,15 @@ class Concessionaria extends Model
 {
     use HasFactory;
 
+    protected $fillable =[
+        'titulo',
+        'descricao',
+        'preco',
+        'cidade_id',
+        'tipo_id',
+        'finalidade_id'
+    ];
+
     public function endereco(){
         return $this->hasOne(Endereco::class);
     }

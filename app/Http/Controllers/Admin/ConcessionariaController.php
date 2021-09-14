@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Automovel;
 use App\Models\Tipo;
+use App\Models\Concessionaria;
 use App\Models\Finalidade;
+use App\Models\Proximidade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConcessionariaController extends Controller
 {
@@ -30,8 +33,9 @@ class ConcessionariaController extends Controller
         $automovel = automovel::all();
         $tipos = Tipo::all();
         $finalidades = Finalidade::all();
+        $proximidades= proximidade::all();
         $action = route('admin.concessionaria.store');
-        return view('admin.concessionaria.form', compact('action', 'automovel', 'tipo', 'finalidade'));
+        return view('admin.concessionaria.form', compact('action', 'automovel', 'tipo', 'finalidade','proximidade'));
 
     /**
      * Store a newly created resource in storage.
@@ -39,9 +43,19 @@ class ConcessionariaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ConcessionariaRequest $request)
+    public function store(Request $request)
     {
-        return view('admin.concessionaria.store');
+        DB::beginTransaction();
+        $concessionaria= concessionaria::create($request)->all());
+        $concessionaria=endereco()->create($request->all());
+
+        if($request->has('proximidades')){
+            $concessionaria->proximidades()->sync($request->proximidades);
+        }
+        DB::Commit();
+
+        $request->session()->flash('sucesso', "Concessionaria incluida com Sucesso!");
+        return redirect()->route("admin.concessionaria.index");
     }
 
     /**

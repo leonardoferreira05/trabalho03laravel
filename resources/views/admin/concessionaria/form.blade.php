@@ -60,7 +60,50 @@
             <label for="descricao">Descrição</label>
         </div>
 
+        <div class="input-field" col s5>
+            <input type="text" name="rua" id="rua"/>
+            <label for="rua">Rua</label>
+        </div>
 
+        <div class="input-field" col s3>
+            <input type="text" name="bairro" id="bairro"/>
+            <label for="bairro">Bairro</label>
+        </div>
+
+        <div class="input-field" col s2>
+            <input type="number" name="numero" id="numero"/>
+            <label for="numero">Número</label>
+        </div>
+
+        <div class="input-field" col s2>
+            <input type="text" name="cidade" id="cidade"/>
+            <label for="cidade">Cidade</label>
+        </div>
+
+        <div class="input-field" col s2>
+            <input type="text" name="estado" id="estado"/>
+            <label for="estado">Estado</label>
+        </div>
+
+        <div class="row">
+            <div class="input-field" col s2>
+                <select name="proximidades[]" id="proximidades" multiple>
+                <option value="" disabled >Selecione uma proximidade</option>
+                @foreach ($proximidades as $proximidade)
+                    <option value="{{$proximidade->id}}">{{$proximidade->nome}}</option>
+                @endforeach
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="right-align">
+            <a class="btn-flat waves-effect" href="{{route('admin.concessionaria.index')}}">Cancelar</a>
+            <button class= 'btn waves-effect waves-light' type="submit">
+            SALVAR
+            </button>
+        </div>
 
     </form>
 
