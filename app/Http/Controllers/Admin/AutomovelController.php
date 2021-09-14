@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\AutomovelRequest;
-
-use App\Models\automovel;
+use App\Models\Automovel;
 
 class AutomovelController extends Controller
 {
-    public function automovel(){
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
         $subtitulo = 'Lista de Automoveis';
 
        // $automoveis = ['Gol', 'Corsa', 'Palio', 'Onix'];
@@ -18,42 +23,62 @@ class AutomovelController extends Controller
 
     
         return view('admin.automovel.index', compact('subtitulo', 'automovel'));
+
     }
 
-    public function formAdicionar()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        $action= route('admin.automovel.adicionar');
+        $action= route('admin.automovel.store');
         return view("admin.automovel.form", compact('action'));
+
     }
 
-    public function adicionar(AutomovelRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(AutomovelRequest $request)
     {
-        
         Automovel::create($request->all());
 
         $request->session()->flash('sucesso', "Automovel $request->fabricante adicionado com Sucesso!");
         //$request->session()->flash('sucesso', "Modelo $request->modelo adicionado com Sucesso!");
-        //$request->session()->flash('sucesso', "Cor $request->cor adicionado com Sucesso!");
+        //$request->session()->flash('sucesso', "Cor $request->cor adicionado com Sucesso!");        
+        return redirect()->route("admin.automovel.index");
 
-        
-        return redirect()->route("admin.automovel.listar");
     }
 
-    public function deletar($id, Request $request)
-    { 
-        Automovel::destroy($id);
-        $request->session()->flash('sucesso', "Automovel $request->fabricante excluido com Sucesso!");
-        return redirect()->route("admin.automovel.listar");
-    } 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     
-    public function formEditar($id, Request $request)
-    { 
+    public function edit($id)
+    {
         $automovel= Automovel::find($id);
-        $action= route('admin.automovel.editar', $automovel->id);
+        $action= route('admin.automovel.update', $automovel->id);
         return view("admin.automovel.form", compact('automovel','action'));
+
     }
-    public function editar(AutomovelRequest $request, $id)
-    { 
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(AutomovelRequest $request, $id)
+    {
         $automovel= Automovel::find($id);
         $automovel->update($request->all());
        // $automovel->fabricante = $request->fabricante;
@@ -62,6 +87,21 @@ class AutomovelController extends Controller
         $automovel->save();
 
         $request->session()->flash('sucesso', "Automovel $request->fabricante alterado com Sucesso!");      
-        return redirect()->route("admin.automovel.listar");
-    }          
+        return redirect()->route("admin.automovel.index");
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $id)
+    {
+        Automovel::destroy($id);
+        $request->session()->flash('sucesso', "Automovel $request->fabricante excluido com Sucesso!");
+        return redirect()->route("admin.automovel.index");
+
+    }
 }

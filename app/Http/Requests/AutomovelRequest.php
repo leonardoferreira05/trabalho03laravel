@@ -24,7 +24,7 @@ class AutomovelRequest extends FormRequest
     public function rules()
     {
         return [
-            'fabricante' => "bail|required|min:3|max:100|unique:automovel,fabricante,$this->id",
+            'fabricante' => "bail|required|min:3|max:100|unique:automovel,fabricante,$this->fabricante",
             'modelo' => "required|min:2|max:100,modelo,$this->id",
             'cor' => 'required|min:3|max:50'
             //

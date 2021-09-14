@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AutomovelController;
+use App\Http\Controllers\Admin\ConcessionariaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,12 +24,10 @@ Route::redirect('/', '/admin/automovel');
 
 Route::prefix('admin')->name('admin.')->group(function(){
 
-  Route::get('automovel', [AutomovelController::class, 'automovel'])->name('automovel.listar');
-  Route::get('automovel/salvar', [AutomovelController::class, 'formAdicionar'])->name('automovel.form');
-  Route::post('automovel/salvar', [AutomovelController::class, 'adicionar'])->name('automovel.adicionar');
-  Route::delete('automovel/{id}', [AutomovelController::class, 'deletar'])->name('automovel.deletar');
-  Route::get('automovel/{id}', [AutomovelController::class, 'formEditar'])->name('automovel.formEditar');
-  Route::put('automovel/{id}', [AutomovelController::class, 'editar'])->name('automovel.editar');
+    Route::resource('automovel', AutomovelController::class);
+    Route::resource('automovel', AutomovelController::class)->except(['show']);
+    Route::resource('concessionaria', ConcessionariaController::class);
+      
 });
 
 Route::get('sobre',function(){

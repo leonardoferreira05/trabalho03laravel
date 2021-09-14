@@ -43,7 +43,7 @@
         </div>
                 
         <div class="right-align">
-            <a class="btn-flat waves-effect" href="{{route('admin.automovel.listar')}}">Cancelar</a>
+            <a class="btn-flat waves-effect" href="{{route('admin.automovel.index')}}">Cancelar</a>
             <button class= 'btn waves-effect waves-light' type="submit">
             SALVAR
             </button>

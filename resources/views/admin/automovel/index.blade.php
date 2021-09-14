@@ -20,13 +20,13 @@
                     <td>{{$automovel->cor}}</td>
                     <td class='right-align'>
                        
-                      <a href="{{route('admin.automovel.formEditar', $automovel->id)}}">
+                      <a href="{{route('admin.automovel.edit', $automovel->id)}}">
                         <span>
                             <i class="material-icons blue-text text-accent-2">edit</i>
                         </span>
                       </a>
 
-                        <form action="{{route('admin.automovel.deletar',$automovel->id)}}" method="POST" style="display: inline;">
+                        <form action="{{route('admin.automovel.destroy',$automovel->id)}}" method="POST" style="display: inline;">
                             @csrf 
                             @method('DELETE')
 
@@ -48,7 +48,7 @@
     </table>
 
     <div class= 'fixed-action-btn'>
-        <a class= 'btn-floating btn-large waves-effect waves-light' href="{{route('admin.automovel.form')}}">
+        <a class= 'btn-floating btn-large waves-effect waves-light' href="{{route('admin.automovel.create')}}">
             <i class="large material-icons">add</i>
         
         </a>

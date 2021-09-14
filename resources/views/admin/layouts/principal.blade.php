@@ -24,10 +24,10 @@
             <a href="/" class="brand-logo">Best Automoveis</a>
             <ul class="right">
                 <li>
-                    <a href="#">Automoveis</a>
+                    <a href="{{route('admin.concessionaria.index')}}">Concessionaria</a>
                 </li>
                 <li>
-                    <a href="#">Marcas</a>
+                    <a href="{{route('admin.automovel.index')}}">Automovel</a>
                 </li>
             </ul>
         </div>
@@ -49,6 +49,11 @@
         @if (session('sucesso'))
              M.toast({html: "{{session('sucesso')}}",  classes: 'rounded'});
         @endif
+
+        document.addEventListener('DOMContentLoaded', function (){
+            var elems=document.querySelectorAll('select');
+            var instances=M.FormSelect.init(elems);
+        });
     </script>
 </body>
 </html>
