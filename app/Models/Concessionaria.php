@@ -13,7 +13,7 @@ class Concessionaria extends Model
         'titulo',
         'descricao',
         'preco',
-        'cidade_id',
+        'automovel_id',
         'tipo_id',
         'finalidade_id'
     ];
@@ -34,8 +34,9 @@ class Concessionaria extends Model
         return $this->belongsTo(Tipo::class);
     }
 
-    public function proximidades(){
+    public function proximidade(){
         return $this->belongsToMany(Proximidade::class)->withTimestamps();
     }
+    
     
 }

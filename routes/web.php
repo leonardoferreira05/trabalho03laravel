@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AutomovelController;
+use App\Http\Controllers\Admin\FotoController;
 use App\Http\Controllers\Admin\ConcessionariaController;
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
     Route::resource('automovel', AutomovelController::class);
     Route::resource('automovel', AutomovelController::class)->except(['show']);
     Route::resource('concessionaria', ConcessionariaController::class);
+    Route::resource('concessionaria.fotos', FotoController::class)->except(['show','edit','update']);
       
 });
 

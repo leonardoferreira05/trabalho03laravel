@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ConcessionariaRequest;
 use App\Models\Automovel;
 use App\Models\Tipo;
 use App\Models\Concessionaria;
@@ -20,7 +21,8 @@ class ConcessionariaController extends Controller
      */
     public function index()
     {
-        return view('admin.concessionaria.index');
+        $concessionarias =concessionaria::with(['titulo','endereco'])->get();
+        return view('admin.concessionaria.index', compact('concessionarias'));
     }
 
     /**
@@ -31,26 +33,27 @@ class ConcessionariaController extends Controller
     public function create()
     {
         $automovel = automovel::all();
+        //$concessionarias = concessionaria::all();
         $tipos = Tipo::all();
         $finalidades = Finalidade::all();
         $proximidades= proximidade::all();
         $action = route('admin.concessionaria.store');
-        return view('admin.concessionaria.form', compact('action', 'automovel', 'tipo', 'finalidade','proximidade'));
-
+        return view('admin.concessionaria.form', compact('action', 'automovel', 'tipos', 'finalidades','proximidades'));
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ConcessionariaRequest $request)
     {
         DB::beginTransaction();
-        $concessionaria= concessionaria::create($request)->all());
-        $concessionaria=endereco()->create($request->all());
+        $concessionarias= concessionaria::create($request->all());
+        $concessionarias=endereco()->create($request->all());
 
         if($request->has('proximidades')){
-            $concessionaria->proximidades()->sync($request->proximidades);
+            $concessionarias->proximidades()->sync($request->proximidades);
         }
         DB::Commit();
 
@@ -58,7 +61,7 @@ class ConcessionariaController extends Controller
         return redirect()->route("admin.concessionaria.index");
     }
 
-    /**
+     /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -87,7 +90,7 @@ class ConcessionariaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ConcessionariaRequest $request, $id)
     {
         //
     }
@@ -98,8 +101,18 @@ class ConcessionariaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        Concessionaria::Destroy($id);
+    $concessionaria = Concessionaria::find($id);
+    DB::beginTransaction();
+    //Remover o endereço
+    $concessionaria->endereco->delete();
+    //Remover o Imovel
+    $concessionaria->delete();
+    DB::commit ();
+    $request->Sessions()->flash('sucesso', "Concessionaria excluido com sucesso!");
+    return redirect()->route('admin.concessionaria.index');
+
     }
 }
