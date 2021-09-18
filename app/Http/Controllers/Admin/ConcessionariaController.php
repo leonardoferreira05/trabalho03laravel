@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ConcessionariaRequest;
 use App\Models\Automovel;
+//use App\Models\Endereco;
 use App\Models\Tipo;
 use App\Models\Concessionaria;
 use App\Models\Finalidade;
@@ -21,7 +22,7 @@ class ConcessionariaController extends Controller
      */
     public function index()
     {
-        $concessionarias =concessionaria::with(['titulo','endereco'])->get();
+        $concessionarias =concessionaria::with(['automovel','endereco'])->get();
         return view('admin.concessionaria.index', compact('concessionarias'));
     }
 
@@ -33,7 +34,7 @@ class ConcessionariaController extends Controller
     public function create()
     {
         $automovel = automovel::all();
-        //$concessionarias = concessionaria::all();
+        //$enderecos = endereco::all();
         $tipos = Tipo::all();
         $finalidades = Finalidade::all();
         $proximidades= proximidade::all();
@@ -49,11 +50,11 @@ class ConcessionariaController extends Controller
     public function store(ConcessionariaRequest $request)
     {
         DB::beginTransaction();
-        $concessionarias= concessionaria::create($request->all());
-        $concessionarias=endereco()->create($request->all());
+        $concessionaria= Concessionaria::create($request->all());
+        $concessionaria->endereco()->create($request->all());
 
-        if($request->has('proximidades')){
-            $concessionarias->proximidades()->sync($request->proximidades);
+        if($request->has('proximidade')){
+            $concessionaria->proximidade()->sync($request->proximidade);
         }
         DB::Commit();
 
@@ -69,7 +70,8 @@ class ConcessionariaController extends Controller
      */
     public function show($id)
     {
-        //
+        $concessionaria= concessionaria::with(['automovel', 'tipo', 'finalidade','proximidade'])->find($id);
+        return view('admin.concessionaria.show', compact('concessionaria'));
     }
 
     /**
@@ -105,10 +107,11 @@ class ConcessionariaController extends Controller
     {
         Concessionaria::Destroy($id);
     $concessionaria = Concessionaria::find($id);
+
     DB::beginTransaction();
-    //Remover o endereço
-    $concessionaria->endereco->delete();
-    //Remover o Imovel
+    //
+    $concessionaria->automovel->delete();
+    //
     $concessionaria->delete();
     DB::commit ();
     $request->Sessions()->flash('sucesso', "Concessionaria excluido com sucesso!");

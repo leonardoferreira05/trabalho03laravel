@@ -8,9 +8,8 @@
         <thead>
             <tr>
                 <th>Concessionaria</th>
-                <th>Cidade</th>
-                <th>Estado</th>
-                <th>Rua</th>
+                <th>Carro</th>
+                <th>Preço</th>
                 <th class='right-align'>Opçoes</th>
             </tr>
         </thead>
@@ -18,12 +17,25 @@
             @forelse($concessionarias as $concessionaria)
                 <tr>
                     <td>{{$concessionaria->titulo}}</td>
-                    <td>{{$concessionaria->endereco->cidade}}</td>
-                    <td>{{$concessionaria->endereco->estado}}</td>
-                    <td>{{$concessionaria->endereco->rua}}</td>
+                    <td>{{$concessionaria->automovel->modelo}}</td>
+                    <td>{{$concessionaria->preco}}</td>
                     <td class='right-align'>
-                       
-                      <a href="{{route('admin.concessionaria.edit', $concessionaria->id)}}">
+                    
+                    
+                    <a href="{{route('admin.concessionaria.fotos.index', $concessionaria->id)}}">
+                        <span>
+                            <i class="material-icons green-text text-lighten-1">insert_photo</i>
+                        </span>
+                      </a>
+                    
+                    <a href="{{route('admin.concessionaria.show', $concessionaria->id)}}">
+                        <span>
+                            <i class="material-icons indigo-text text-accent-2">remove_red_eye</i>
+                        </span>
+                      </a>
+                    
+                    
+                    <a href="{{route('admin.concessionaria.edit', $concessionaria->id)}}">
                         <span>
                             <i class="material-icons blue-text text-accent-2">edit</i>
                         </span>
